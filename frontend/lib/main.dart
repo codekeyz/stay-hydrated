@@ -122,8 +122,7 @@ Future<void> setupNotifications() async {
           channel.id,
           channel.name,
           channelDescription: channel.description,
-          icon: android.smallIcon,
-          // other properties...
+          icon: "ic_launcher",
         ),
       ),
     );
