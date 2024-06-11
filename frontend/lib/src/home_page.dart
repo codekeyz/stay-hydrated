@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Future<DateTime?> get lastIntake async {
     final result = await intakeCollection
         .where('user_uid', isEqualTo: user.uid)
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: false)
         .limitToLast(1)
         .get();
 
@@ -51,8 +51,11 @@ class _HomePageState extends State<HomePage> {
             builder: (context, snapshot) {
               final lastWaterIntake = snapshot.data;
 
-              final shouldLogIntake = lastWaterIntake == null ||
-                  DateTime.now().difference(lastWaterIntake).inHours >= 2;
+              final timeSinceLastIntake = lastWaterIntake == null
+                  ? 0
+                  : DateTime.now().difference(lastWaterIntake).inHours;
+
+              final shouldLogIntake = timeSinceLastIntake >= 2;
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                       TextSpan(
                         text: 'Last Intake:',
                         children: [
-                          TextSpan(text: timeago.format(lastWaterIntake))
+                          TextSpan(text: timeago.format(lastWaterIntake!))
                         ],
                       ),
                     ),
