@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "817584247504",
+    "project_id": "stay-hydrated-fe5ff",
+    "storage_bucket": "stay-hydrated-fe5ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817584247504:android:be327ed1f1fe5df8c384d5",
+        "android_client_info": {
+          "package_name": "com.codekeyz.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkJsgevIkznfQtAIQdf6yqexzkaGby-e4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
