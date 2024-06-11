@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/firebase_options.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class HomePage extends StatefulWidget {
@@ -12,15 +12,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   User get user => FirebaseAuth.instance.currentUser!;
-  final intakeCollection =
-      FirebaseFirestore.instance.collection('water_intakes');
 
   bool _loading = false;
 
   void logWaterIntake() async {
     setState(() => _loading = true);
 
-    await intakeCollection.add({
+    await waterIntakeCollection.add({
       "timestamp": DateTime.timestamp().toIso8601String(),
       "user_uid": user.uid,
     });
@@ -29,9 +27,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<DateTime?> get lastIntake async {
-    final result = await intakeCollection
+    final result = await waterIntakeCollection
         .where('user_uid', isEqualTo: user.uid)
-        .orderBy('timestamp', descending: false)
+        .orderBy('timestamp')
         .limitToLast(1)
         .get();
 
@@ -52,10 +50,11 @@ class _HomePageState extends State<HomePage> {
               final lastWaterIntake = snapshot.data;
 
               final timeSinceLastIntake = lastWaterIntake == null
-                  ? 0
+                  ? null
                   : DateTime.now().difference(lastWaterIntake).inHours;
 
-              final shouldLogIntake = timeSinceLastIntake >= 2;
+              final shouldLogIntake =
+                  timeSinceLastIntake != null && timeSinceLastIntake >= 2;
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -70,12 +69,12 @@ class _HomePageState extends State<HomePage> {
                       height: 25,
                       child: CircularProgressIndicator(),
                     )
-                  else if (!shouldLogIntake) ...[
+                  else if (!shouldLogIntake && lastWaterIntake != null) ...[
                     Text.rich(
                       TextSpan(
                         text: 'Last Intake:',
                         children: [
-                          TextSpan(text: timeago.format(lastWaterIntake!))
+                          TextSpan(text: timeago.format(lastWaterIntake))
                         ],
                       ),
                     ),

@@ -7,8 +7,9 @@ environment:
   sdk: ^3.4.2
 
 dependencies:
-  pharaoh: ^0.0.7+2
-  jwt_decoder: ^2.0.1
+  shelf: ^1.4.1
+  shelf_router: ^1.1.4
+ 
   dart_firebase_admin: ^0.3.1
   dotenv: ^4.2.0
 

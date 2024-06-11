@@ -1,12 +1,12 @@
-import 'package:dart_firebase_admin/auth.dart';
 import 'package:dart_firebase_admin/dart_firebase_admin.dart';
 import 'package:dart_firebase_admin/firestore.dart';
+import 'package:dart_firebase_admin/messaging.dart';
 import 'package:dotenv/dotenv.dart';
 
 final env = DotEnv(includePlatformEnvironment: true)..load();
 
 late Firestore firestore;
-late Auth firebaseAuth;
+late Messaging messaging;
 const kReleaseMode = bool.fromEnvironment('dart.vm.product');
 
 void initFirebase() {
@@ -25,8 +25,8 @@ void initFirebase() {
   }
 
   final admin = FirebaseAdminApp.initializeApp(projectId, cred);
-  if (!kReleaseMode) admin.useEmulator();
+  // if (!kReleaseMode) admin.useEmulator();
 
   firestore = Firestore(admin);
-  firebaseAuth = Auth(admin);
+  messaging = Messaging(admin);
 }
