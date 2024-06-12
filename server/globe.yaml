@@ -1,0 +1,4 @@
+crons:
+  - id: check_and_notify_water_intake
+    schedule: '0 */2 * * *'
+    path: '/tasks/notify-water-intake'

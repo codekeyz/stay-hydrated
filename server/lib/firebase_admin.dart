@@ -5,9 +5,11 @@ import 'package:dotenv/dotenv.dart';
 
 final env = DotEnv(includePlatformEnvironment: true)..load();
 
+final userCollection = firestore.collection('users');
+final waterIntakeCollection = firestore.collection('water_intakes');
+
 late Firestore firestore;
 late Messaging messaging;
-const kReleaseMode = bool.fromEnvironment('dart.vm.product');
 
 void initFirebase() {
   final cred = Credential.fromApplicationDefaultCredentials();
@@ -21,11 +23,10 @@ void initFirebase() {
 
   final projectId = env['FIREBASE_PROJECT_ID'];
   if (projectId == null) {
-    throw Exception('Please provide FIREBASE_PROJECT_ID in environment,');
+    throw Exception('Please provide FIREBASE_PROJECT_ID in environment');
   }
 
   final admin = FirebaseAdminApp.initializeApp(projectId, cred);
-  // if (!kReleaseMode) admin.useEmulator();
 
   firestore = Firestore(admin);
   messaging = Messaging(admin);
