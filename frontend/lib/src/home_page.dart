@@ -42,13 +42,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
+      body: Center(
         child: FutureBuilder<DateTime?>(
             future: lastIntake,
             builder: (context, snapshot) {
-              final lastWaterIntake = snapshot.data;
+              if (_loading ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
 
+              final lastWaterIntake = snapshot.data;
               final timeSinceLastIntake = lastWaterIntake == null
                   ? null
                   : DateTime.now().difference(lastWaterIntake).inHours;
@@ -60,16 +63,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/drink_water.png', height: 200),
-                  const SizedBox(height: 40),
-                  if (_loading ||
-                      snapshot.connectionState == ConnectionState.waiting)
-                    const SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: CircularProgressIndicator(),
-                    )
-                  else if (!shouldLogIntake && lastWaterIntake != null) ...[
+                  if (!shouldLogIntake && lastWaterIntake != null) ...[
                     Text.rich(
                       TextSpan(
                         text: 'Last Intake:',
@@ -88,23 +82,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ] else
-                    TextButton(
-                      style: ButtonStyle(
-                        padding: WidgetStateProperty.all(
-                          const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 8,
-                          ),
-                        ),
-                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        )),
-                        backgroundColor: WidgetStateProperty.all(Colors.black),
-                      ),
+                    OutlinedButton(
                       onPressed: logWaterIntake,
                       child: const Text(
                         'Log Water Intake',
-                        style: TextStyle(fontSize: 15, color: Colors.white),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ],

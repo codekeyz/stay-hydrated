@@ -31,14 +31,13 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  final GlobalKey<NavigatorState> _navigator = GlobalKey();
   bool _loading = false;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       init();
     });
   }
@@ -69,17 +68,11 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-      navigatorKey: _navigator,
-      debugShowCheckedModeBanner: false,
       home: const HomePage(),
+      theme: ThemeData.dark(),
       builder: (_, child) {
         if (_loading) {
-          return Container(
-            color: Colors.white,
-            alignment: Alignment.center,
-            child: const SizedBox(child: CircularProgressIndicator()),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
         return child!;
       },

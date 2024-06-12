@@ -17,7 +17,7 @@ void initFirebase() {
   // ignore: invalid_use_of_internal_member
   if (cred.serviceAccountCredentials == null) {
     throw Exception(
-      'Please provide GOOGLE_SERVICE_ACCOUNT variable in environment.',
+      'Please provide GOOGLE_APPLICATION_CREDENTIALS variable in environment.',
     );
   }
 
