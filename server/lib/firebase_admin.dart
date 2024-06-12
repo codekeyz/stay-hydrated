@@ -3,7 +3,7 @@ import 'package:dart_firebase_admin/firestore.dart';
 import 'package:dart_firebase_admin/messaging.dart';
 import 'package:dotenv/dotenv.dart';
 
-final env = DotEnv(includePlatformEnvironment: true)..load();
+final env = DotEnv(includePlatformEnvironment: true, quiet: true)..load();
 
 final userCollection = firestore.collection('users');
 final waterIntakeCollection = firestore.collection('water_intakes');
