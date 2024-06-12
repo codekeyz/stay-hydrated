@@ -41,14 +41,15 @@ FutureOr<Response> _notifyWaterIntake(Request request) async {
         .orderBy('timestamp')
         .limitToLast(1)
         .get();
-    if (result.docs.isEmpty) continue;
 
-    final lastIntakeDate =
-        DateTime.parse(result.docs.first.data()['timestamp'].toString());
+    if (result.docs.isNotEmpty) {
+      final lastIntakeDate =
+          DateTime.parse(result.docs.first.data()['timestamp'].toString());
 
-    final nextIntakeDue =
-        DateTime.timestamp().difference(lastIntakeDate).inHours >= 2;
-    if (!nextIntakeDue) continue;
+      final nextIntakeDue =
+          DateTime.timestamp().difference(lastIntakeDate).inHours >= 2;
+      if (!nextIntakeDue) continue;
+    }
 
     final message = TokenMessage(
       token: user['fcm_token'].toString(),
